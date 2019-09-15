@@ -1,0 +1,61 @@
+//Добавление фото
+
+api route: https://4okeykiusj.execute-api.us-east-2.amazonaws.com/beta/addface
+method: POST
+
+headers: {
+          Accept: 'application/json',
+          'X-Amz-Target': 'RekognitionService.IndexFaces',
+          'Content-Type': 'application/x-amz-json-1.1',
+        },
+
+body: JSON.stringify({
+    Image: this.state.base64String, //картинка в base64
+    name: this.state.username, //адрес пользователя или идентификатор, чтобы в приложении можно было найти
+}),
+
+// Определение пользователей
+api route: https://4okeykiusj.execute-api.us-east-2.amazonaws.com/beta/search
+method: POST
+
+headers: {
+    Accept: 'application/json',
+    'X-Amz-Target': 'RekognitionService.SearchFacesByImage',
+    'Content-Type': 'application/x-amz-json-1.1',
+},
+body: JSON.stringify({
+    Image: this.state.base64String,
+    name: this.state.username,
+}),
+
+JSON ответа:
+Нужно только поле FaceMatches. Если оно есть и длина массива > 0, то люди найдены
+Поле: ExternalImageId - это тот Id, который ты отправляешь на этапе добавления фото 
+
+{ 
+   "SearchedFaceBoundingBox":{ 
+      "Width":0.4501308500766754,
+      "Height":0.5160086154937744,
+      "Left":0.26220959424972534,
+      "Top":0.2967956066131592
+   },
+   "SearchedFaceConfidence":99.99998474121094,
+   "FaceMatches":[ 
+      { 
+         "Similarity":99.94644165039062,
+         "Face":{ 
+            "FaceId":"515a3144-eb52-42df-9dbd-0750d2105040",
+            "BoundingBox":{ 
+               "Width":0.5325300097465515,
+               "Height":0.6236889958381653,
+               "Left":0.2037229984998703,
+               "Top":0.2652220129966736
+            },
+            "ImageId":"6b7ec922-ac1e-3d6d-b550-1643b72e16ac",
+            "ExternalImageId":"Me",
+            "Confidence":99.9999008178711
+         }
+      }
+   ],
+   "FaceModelVersion":"4.0"
+}
